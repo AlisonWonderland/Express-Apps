@@ -1,13 +1,16 @@
 var express = require("express");
 var app = express();
 
+app.use(express.static("public")); // Tells express to look for files in our 'public' folder
+app.set("view engine", "ejs")
+
 app.get("/", function(req, res) {
-    res.render("home.ejs");
+    res.render("home");
 });
 
 app.get("/endpoint/:endpoint", function(req, res){
     var endpoint = req.params.endpoint;
-    res.render("love.ejs", {endpoint: endpoint, text: "This is some text in an h2"});
+    res.render("love", {endpoint: endpoint, text: "This is some text in an h2"});
 });
 
 app.get("/posts", function(req,res) {
@@ -17,7 +20,7 @@ app.get("/posts", function(req,res) {
         {title: "I know write", author:"Surei"}
     ];
 
-    res.render("posts.ejs", {posts: posts});
+    res.render("posts", {posts: posts});
 });
 
 app.listen(3000, function() {
