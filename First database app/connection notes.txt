@@ -1,0 +1,9 @@
+SET GLOBAL validate_password_policy = 0;
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+flush privileges;
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+First line lets you use 'password' for you password.
+Second line creates user and password.
