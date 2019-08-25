@@ -35,7 +35,7 @@ app.post("/register", function(req, res) {
         if (error) throw error;
         console.log("Added email");
     });
-    sendEmail(user_email);
+    sendWelcomeEmail(user_email);
     res.redirect("/");
 });
 
