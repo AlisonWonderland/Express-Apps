@@ -24,7 +24,6 @@ app.get("/", function(req, res) {
     connection.query('SELECT COUNT(*) AS total_users FROM users', function (error, results, fields) {
         if (error) throw error;
         var total_users = results[0].total_users;
-        var deadly = "deadly";
         res.render("home", {count:total_users});
     });
 });
@@ -40,11 +39,6 @@ app.post("/register", function(req, res) {
     res.redirect("/");
 });
 
-app.get("/joke", function(req, res) {
-    res.send("Knock knock");
-});
-
-
 app.listen(3000, function() {
     console.log("Server started");
 });
@@ -57,14 +51,14 @@ async function sendWelcomeEmail(user_email) {
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-            user: 'dimitridawn@gmail.com', 
-            pass: 'Pulgoso2012!'
+            user: '', // your email goes here
+            pass: '' // email password goes here.
         }
     });
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-        from: 'dimitridawn@gmail.com', // sender address
+        from: '', // your email goes here
         to: user_email, // list of receivers
         subject: '#(#@_(%#(@($', // Subject line
         text: 'Welcome', // plain text body
@@ -77,9 +71,5 @@ async function sendWelcomeEmail(user_email) {
     console.log('Message sent: %s', info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
-    // Preview only available when sending through an Ethereal account
     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
-
-// main().catch(console.error);
