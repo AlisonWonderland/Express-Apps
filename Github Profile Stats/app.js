@@ -33,8 +33,8 @@ app.get('/oauth/redirect', (req, res) => {
         .then(function(response) {
             return response.json();
         })
-        .then(function(response) {
-            githubInfo = getGithubInfo(response);
+        .then(async function(response) {
+            githubInfo = await getGithubInfo(response);
             res.render('welcome', githubInfo);
         })
         .catch(function(error) {
@@ -47,18 +47,6 @@ app.listen(8080, function(req, res) {
     console.log("Server started");
 });
 
-async function getUserName(token) {
-	return fetch('//api.github.com/user', {
-			headers: {
-				Authorization: 'token ' + token
-			}
-        })
-		.then(function(response){
-            console.log(response);
-            return response.json();
-        })
-}
-
 function fetchUser(accessToken) {
     return fetch('https://api.github.com/user', {
                 headers: {
@@ -68,14 +56,69 @@ function fetchUser(accessToken) {
 }
 
 // get all the stats here
-function getGithubInfo(response) {
-    // this can be put in a funcction called basicInfo. Add another one for languageStats(), totalCommits() including average each day.
+async function getGithubInfo(response) {
+    // this can be put in a funcction called basicInfo. Add another one for languageStats(), totalCommits() including average each day.  
     var githubInfo = {
         github_name: response.login,
         num_repos: response.public_repos,
-    };
-    githubInfo.created_date = new Date(response.created_at).toLocaleString('en-GB', { timeZone: 'UTC', day: 'numeric', year: 'numeric', month: 'long' });
-    githubInfo.last_updated = new Date(response.updated_at).toLocaleString('en-GB', { timeZone: 'UTC', day: 'numeric', year: 'numeric', month: 'long' });
-    
+        created_date: formatDate(response.created_at), 
+        last_updated: formatDate(response.updated_at),
+        repo_info: await getRepoInfo(response.repos_url) // returns names right now
+    };    
     return githubInfo;
 }
+
+function formatDate(date) {
+    return new Date(date).toLocaleString('en-GB', { timeZone: 'UTC', day: 'numeric', year: 'numeric', month: 'long' });
+}
+
+async function getRepoInfo(repos_url) {
+    var response = await fetch(repos_url)
+                    .then(function(response) {
+                        return response;
+                    });
+    
+    var repos = await response.json();
+    var repoNames = [];
+
+    for(var i = 0; i < repos.length; ++i) {
+        repoNames.push({name: repos[i].name});
+        // repoNames.push({name: repos[i].name, languageData: getLanguageData(repos[i].languages_url)});
+        await getLanguageData(repos[i].languages_url);
+    }
+    // console.log(repoNames); delete both
+    // , languages: getLanguages(repos[i].languages_url){language, percentage}}
+    
+    return repoNames;
+}
+
+async function getLanguageData(languages_url) {
+    var response = await fetch(languages_url)
+                    .then(function(response) {
+                        return response;
+                    });
+    
+    var languageResponse = await response.json();
+    var languages = Object.keys(languageResponse);
+    var bytes = Object.values(languageResponse);
+
+    console.log(languages);
+    console.log(bytes);
+    var totalBytes = 0;
+    // Calculating total bytes of the files in repos
+    for(var i = 0; i < bytes.length; ++i) {
+        totalBytes += bytes[i];
+    }
+
+    // Adding percentages
+    var languageData = {};
+    for(var i = 0; i < languages.length; ++i) {
+        languageData[languages[i]] = Math.round(bytes / totalBytes * 10000) / 100 ; // Need to add percentage
+    }
+    
+    return languageData;
+}
+
+// Make a function with the list of all the languages used ordered by number of bytes, use charts
+// Add loading screen.
+// Add a form to look up usernames
