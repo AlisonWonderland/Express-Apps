@@ -20,8 +20,12 @@
 
     <% for(var i = 0; i < repo_info.length; ++i) { %>
         <div>
-            <%= repo_info[i].name %>
-            <!-- Add percentage symbol -->
+            <p> <%= repo_info[i].name %> </p> 
+            <% var languages = Object.keys(repo_info[i].languages); %>
+            <% var percentages = Object.values(repo_info[i].languages); %>
+            <% for(var j = 0; j < languages.length; ++j) { %>
+                <p> <%= languages[j] %> : <%= percentages[j] %> % </p>
+            <% } %>
         </div>
     <% } %>
 </body>

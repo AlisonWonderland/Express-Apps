@@ -1,22 +1,20 @@
 var express = require('express');
 var fetch = require('node-fetch');
 
-
 var app = express();
 app.use(express.static(__dirname + '/public'));
 app.set("view engine", "ejs");
 
-var clientID = '4567ebbd17d189643355';
-var clientSecret = 'a1e59c33c7cd61f324de669bfb25c667822631db';
+var clientID = '';
+var clientSecret = '';
+var clientInfo =`?client_id=${clientID}&client_secret=${clientSecret}`;
 
-// app.get('/welcome', function(){ 
-//     res.render(welcome);
-// });
+
 
 app.get('/oauth/redirect', (req, res) => {
     var requestToken = req.query.code;
 
-    fetch(`https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`, { 
+    fetch('https://github.com/login/oauth/access_token' + clientInfo + `&code=${requestToken}`, { 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +55,6 @@ function fetchUser(accessToken) {
 
 // get all the stats here
 async function getGithubInfo(response) {
-    // this can be put in a funcction called basicInfo. Add another one for languageStats(), totalCommits() including average each day.  
     var githubInfo = {
         github_name: response.login,
         num_repos: response.public_repos,
@@ -73,39 +70,36 @@ function formatDate(date) {
 }
 
 async function getRepoInfo(repos_url) {
-    var response = await fetch(repos_url)
+    var response = await fetch(repos_url + clientInfo)
                     .then(function(response) {
                         return response;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
                     });
     
     var repos = await response.json();
-    var repoNames = [];
+    var repoInfo = [];
 
     for(var i = 0; i < repos.length; ++i) {
-        repoNames.push({name: repos[i].name});
-        // repoNames.push({name: repos[i].name, languageData: getLanguageData(repos[i].languages_url)});
-        await getLanguageData(repos[i].languages_url);
+        repoInfo.push({name: repos[i].name, languages: await getLanguageData(repos[i].languages_url)});
     }
-    // console.log(repoNames); delete both
-    // , languages: getLanguages(repos[i].languages_url){language, percentage}}
     
-    return repoNames;
+    return repoInfo;
 }
 
 async function getLanguageData(languages_url) {
-    var response = await fetch(languages_url)
+    var response = await fetch(languages_url + clientInfo)
                     .then(function(response) {
                         return response;
                     });
     
     var languageResponse = await response.json();
-    var languages = Object.keys(languageResponse);
+    // Note: These two return arrays
+    var languages = Object.keys(languageResponse); 
     var bytes = Object.values(languageResponse);
 
-    console.log(languages);
-    console.log(bytes);
     var totalBytes = 0;
-    // Calculating total bytes of the files in repos
     for(var i = 0; i < bytes.length; ++i) {
         totalBytes += bytes[i];
     }
@@ -113,9 +107,9 @@ async function getLanguageData(languages_url) {
     // Adding percentages
     var languageData = {};
     for(var i = 0; i < languages.length; ++i) {
-        languageData[languages[i]] = Math.round(bytes / totalBytes * 10000) / 100 ; // Need to add percentage
+        languageData[languages[i]] = Math.round(bytes[i] / totalBytes * 10000) / 100 ; // Need to add percentage
     }
-    
+
     return languageData;
 }
 
