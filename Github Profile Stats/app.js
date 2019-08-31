@@ -1,15 +1,23 @@
 var express = require('express');
-var fetch = require('node-fetch');
-
 var app = express();
-app.use(express.static(__dirname + '/public'));
+var fetch = require('node-fetch');
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
+
+
+
+app.use(express.static(__dirname + '/public/html'));
+app.use(express.static(__dirname + '/public/css'));
+app.use(express.static(__dirname + '/public/js'));
 app.set("view engine", "ejs");
 
-var clientID = '';
-var clientSecret = '';
+var clientID = '4567ebbd17d189643355';
+var clientSecret = '2163bb3cd1c103c1bb2d0ce5fc312955448e05e6';
 var clientInfo =`?client_id=${clientID}&client_secret=${clientSecret}`;
 
-
+// app.get('/welcome', function(req, res) {
+//     res.render("welcome");
+// });
 
 app.get('/oauth/redirect', (req, res) => {
     var requestToken = req.query.code;
@@ -34,6 +42,12 @@ app.get('/oauth/redirect', (req, res) => {
         .then(async function(response) {
             githubInfo = await getGithubInfo(response);
             res.render('welcome', githubInfo);
+            // res.render('welcome', {github_name: "Name"});
+            io.on('connection', function(socket){
+                for(var i = 0; i < 100; ++i) {
+                    socket.emit('connected', "msg");
+                }
+            });
         })
         .catch(function(error) {
             console.log(error);
@@ -41,8 +55,12 @@ app.get('/oauth/redirect', (req, res) => {
 });
 
 // Start the server on port 8080
-app.listen(8080, function(req, res) {
-    console.log("Server started");
+// app.listen(8080, function(req, res) {
+//     console.log("Server started");
+// });
+
+http.listen(8080, function(){
+    console.log('listening on *:8080');
 });
 
 function fetchUser(accessToken) {
@@ -59,8 +77,8 @@ async function getGithubInfo(response) {
         github_name: response.login,
         num_repos: response.public_repos,
         created_date: formatDate(response.created_at), 
-        last_updated: formatDate(response.updated_at),
-        repo_info: await getRepoInfo(response.repos_url) // returns names right now
+        last_updated: formatDate(response.updated_at)
+        // repo_info: await getRepoInfo(response.repos_url) // returns names right now
     };    
     return githubInfo;
 }
@@ -116,3 +134,22 @@ async function getLanguageData(languages_url) {
 // Make a function with the list of all the languages used ordered by number of bytes, use charts
 // Add loading screen.
 // Add a form to look up usernames
+
+
+// +++++++++++BIG ONE +++++++++++++
+// ADD SLOW LOADING
+// RENDER ONE PART LIKE THE BASIC INFO 
+// AND THEN RENDER EACH REPO INFO ONE BY ONE
+// OR ADD SKELETON SCREEN/LOADING ANIMATION
+// MORE DETAILS HERE https://medium.com/flawless-app-stories/everything-you-need-to-know-about-loading-animations-10db7f9b61e
+
+// <% for(var i = 0; i < repo_info.length; ++i) { %>
+//     <div>
+//         <p> <%= repo_info[i].name %> </p> 
+//         <% var languages = Object.keys(repo_info[i].languages); %>
+//         <% var percentages = Object.values(repo_info[i].languages); %>
+//         <% for(var j = 0; j < languages.length; ++j) { %>
+//             <p> <%= languages[j] %> : <%= percentages[j] %> % </p>
+//         <% } %>
+//     </div>
+// <% } %>

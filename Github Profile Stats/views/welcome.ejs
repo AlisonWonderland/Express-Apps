@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <title>Welcome</title>
+    <!-- SUPER IMPORTANT '/' IS NEED IN FRONT OF THE HREF BECAUSE I DON'T KNOW -->
+    <link rel="stylesheet" href="/welcome.css">
+    <script src="/socket.io/socket.io.js"></script>
 </head>
-<body>
+<body>  
     <h1>Welcome <%= github_name %>. Here is some info about your account</h1>
-
+    
     <div class="github-info">
         Number of repos: <%= num_repos %>
     </div>
@@ -17,16 +20,11 @@
     <div class="github-info">
         Last updated: <%= last_updated %>
     </div>
+    
+    <ul class="repos">
+        <!-- Repo stats added here -->
+    </ul>
 
-    <% for(var i = 0; i < repo_info.length; ++i) { %>
-        <div>
-            <p> <%= repo_info[i].name %> </p> 
-            <% var languages = Object.keys(repo_info[i].languages); %>
-            <% var percentages = Object.values(repo_info[i].languages); %>
-            <% for(var j = 0; j < languages.length; ++j) { %>
-                <p> <%= languages[j] %> : <%= percentages[j] %> % </p>
-            <% } %>
-        </div>
-    <% } %>
+    <script src="/sockets.js"></script>
 </body>
 </html>
