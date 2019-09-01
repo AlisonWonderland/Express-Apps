@@ -8,6 +8,10 @@ Node.js app that displays data about your Github profile using Github's API.
 * https://medium.com/flawless-app-stories/everything-you-need-to-know-about-loading-animations-10db7f9b61e
 
 
+## Todo
+* Add styling to the website. Layout repo info in squares. Add the percentage bars.
+* After that think about adding loading animations. To do this send amount of repos(repos.length) and then create that amount of divs and then add to those divs as you get the info.
+
 ## Timeline of the project
 First it started with me wanting to learn about how to integrate Oauth into a project. Didn't find a lot of useful resources until I found [this article](https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js/).
 
