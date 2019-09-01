@@ -1,6 +1,6 @@
 var socket = io();
 var repos_ul = document.querySelector(".repos");
-var body = document.querySelector("body");
+var repo_container = document.querySelector(".repo-container");
 
 // Add the repo info to the page
 socket.on('repo info received', function(data) {
@@ -28,5 +28,5 @@ socket.on('repo info received', function(data) {
     }
     
     div.classList.add("repo-info");
-    body.appendChild(div);
+    repo_container.appendChild(div);
 });

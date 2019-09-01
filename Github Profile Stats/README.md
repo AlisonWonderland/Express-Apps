@@ -3,6 +3,8 @@
 Node.js app that displays data about your Github profile using Github's API.
 
 ## Screenshots
+Current look 9/1/2019 1:00pm
+![screenshot](https://i.imgur.com/qu9gOvw.png)
 
 ## Important articles I used
 * https://medium.com/flawless-app-stories/everything-you-need-to-know-about-loading-animations-10db7f9b61e

@@ -2,28 +2,31 @@
 <html lang="en">
 <head>
     <title>Welcome</title>
+    <link href="https://fonts.googleapis.com/css?family=Manjari:100,400&display=swap" rel="stylesheet">
     <!-- SUPER IMPORTANT '/' IS NEED IN FRONT OF THE HREF BECAUSE I DON'T KNOW -->
     <link rel="stylesheet" href="/welcome.css">
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>  
-    <h1>Welcome <%= github_name %>. Here is some info about your account</h1>
+    <h1 class="welcome-header">Welcome <%= github_name %>. Here is some info about your profile</h1>
     
-    <div class="github-info">
-        Number of repos: <%= num_repos %>
-    </div>
-
-    <div class="github-info">
-        Created: <%= created_date %>
-    </div>
-
-    <div class="github-info">
-        Last updated: <%= last_updated %>
+    <div class="general-container">
+        <div class="github-info">
+            Number of repos: <%= num_repos %>
+        </div>
+    
+        <div class="github-info">
+            Profile created: <%= created_date %>
+        </div>
+    
+        <div class="github-info">
+            Profile last updated: <%= last_updated %>
+        </div>
     </div>
     
-    <ul class="repos">
-        <!-- Repo stats added here -->
-    </ul>
+    <div class="repo-container">
+        <!-- Repo-info divs go here -->
+    </div>
 
     <script src="/welcome.js"></script>
 </body>

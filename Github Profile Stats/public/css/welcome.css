@@ -2,18 +2,57 @@ html, body {
     margin: 0;
     height: 100%;
     width: 100%;
+    font-family: 'Manjari', times;
 }
 
 body {
-    background: pink;
+    background: #01024e;
+}
+
+.welcome-header {
+    font-size: 3.8rem;
+    font-weight: 100;
+    color: #E3E7E0;
+    text-align: center;
+}
+
+.general-container {
+    display: flex;
+    justify-content: space-around;
 }
 
 .github-info {
-    
+    /* display: block; */
+    width: 30%;
+    height: auto;
+    margin: 0px 5px;
+    padding: 20px 10px;
+    /* border: 2px solid white; */
+    color: #E3E7E0;
+    background: #ff6464;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+
+.repo-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .repo-info {
-    background: cyan;
+    /* background: cyan; */
+    color: #E3E7E0;
+    background: #ff6464;
+    width: 300px;
+    margin: 20px 10px;
+    /* border: 2px solid #8b4367; */
+    text-align: center;
 }
 
 .repo-info h2 {
