@@ -1,7 +1,7 @@
 var socket = io();
 var repos_ul = document.querySelector(".repos");
 var repos_container = document.querySelector(".repos-container");
-var color_list = ['#ffffb1', '#b1ffb1', '#ffb265', '#b1b1ff', '#ffd8b1', '#b1ffff', '#fefeff', '#a343ff']
+var bar_color_list = ['#ffffb1', '#b1ffb1', '#fefeff', '#b1b1ff', '#ffd8b1', '#b1ffff', '#ffb265', '#a343ff']
 
 // Add the repo info to the page
 socket.on('repo info received', function(data) {
@@ -24,13 +24,11 @@ socket.on('repo info received', function(data) {
 
     else {
         for(var i = 0; i < languages.length; ++i) {
-            // Maybe put this in a function
             span = document.createElement("span"); 
-            span.innerText = languages[i] + " " +  percentages[i] + "%\n";
+            span.innerText = languages[i] + " " +  percentages[i] + "%";
             span.classList.add("repo-language");
             info_div.appendChild(span);
-            // Add bar. Currently adding pars to webpage
-            info_div.append(addPercentBar(percentages[i]));
+            info_div.append(addPercentBar(percentages[i], i));
         }
     }
     
@@ -38,14 +36,14 @@ socket.on('repo info received', function(data) {
     repos_container.appendChild(info_div);
 });
 
-function addPercentBar(percentage) {
+function addPercentBar(percentage, index) {
     var whole_bar = document.createElement("div");
-    whole_bar.setAttribute("id", "whole-bar");
+    whole_bar.setAttribute("class", "whole-bar");
 
     var percentage_bar = document.createElement("div");
-    percentage_bar.setAttribute("id", "percentage-bar");
-    // percentage.setAttribute("style");
-
+    percentage_bar.setAttribute("class", "percentage-bar");
+    percentage_bar.setAttribute("style", "width: " + percentage + "%;" + 
+                                "background: " + bar_color_list[index] + ";");
     whole_bar.appendChild(percentage_bar);
 
     return whole_bar;
