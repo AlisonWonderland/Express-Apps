@@ -9,10 +9,20 @@ body {
     background: #01024e;
 }
 
+.welcome-header,
+.github-info,
+.repo-info {
+    color: #E3E7E0;
+}
+
+.github-info, 
+.repo-info {
+    background: #ff6464;
+}
+
 .welcome-header {
     font-size: 3.8rem;
     font-weight: 100;
-    color: #E3E7E0;
     text-align: center;
 }
 
@@ -22,14 +32,11 @@ body {
 }
 
 .github-info {
-    /* display: block; */
     width: 30%;
     height: auto;
     margin: 0px 5px;
     padding: 20px 10px;
-    /* border: 2px solid white; */
-    color: #E3E7E0;
-    background: #ff6464;
+    border-radius: 15px;
     font-size: 2rem;
     display: flex;
     justify-content: center;
@@ -38,7 +45,7 @@ body {
 }
 
 
-.repo-container {
+.repos-container {
     margin-top: 20px;
     display: flex;
     justify-content: space-around;
@@ -46,15 +53,40 @@ body {
 }
 
 .repo-info {
-    /* background: cyan; */
-    color: #E3E7E0;
-    background: #ff6464;
-    width: 300px;
+    width: 18%;
     margin: 20px 10px;
-    /* border: 2px solid #8b4367; */
+    padding: 4px 2px;
+    border-radius: 15px;
+    overflow-wrap: break-word;
+    /* text-align: center; */
+}
+
+.repo-name {
+    margin: 0;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
     text-align: center;
 }
 
-.repo-info h2 {
-    margin: 0;
+/* copy what's inside for the other file */
+.repo-language {
+    margin-left: 5px;
+    font-size: 1.25rem;
+    letter-spacing: .7px;
+}
+
+#whole-bar,
+#percentage-bar {
+    border-radius: 10px;
+}
+
+#whole-bar {
+    width: 90%;
+    background: #ffb1b1;
+}
+#percentage-bar {
+    width: 10%;
+    height: 15px;
+    font-size: .8rem;
+    background: #a343ff;
 }
