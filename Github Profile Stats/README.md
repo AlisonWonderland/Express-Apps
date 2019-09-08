@@ -11,8 +11,13 @@ Current look 9/1/2019 1:00pm
 
 
 ## Todo
-* Add styling to the website. Layout repo info in squares. Add the percentage bars.
 * After that think about adding loading animations. To do this send amount of repos(repos.length) and then create that amount of divs and then add to those divs as you get the info.
+* Add stylings to login page
+* Add links to repo titles.
+* Add other stats. 
+* Order by button for repos(title, size, language number)
+* BIG ONE: Make sure that on refresh pages stay the same.
+* OBviously, refactor.
 
 ## Timeline of the project
 First it started with me wanting to learn about how to integrate Oauth into a project. Didn't find a lot of useful resources until I found [this article](https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js/).

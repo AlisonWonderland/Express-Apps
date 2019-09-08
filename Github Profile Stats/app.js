@@ -4,6 +4,7 @@ var fetch = require('node-fetch');
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public/html'));
 app.use(express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public/js'));
@@ -13,20 +14,24 @@ var clientID = '4567ebbd17d189643355';
 var clientSecret = '2163bb3cd1c103c1bb2d0ce5fc312955448e05e6';
 var clientInfo =`?client_id=${clientID}&client_secret=${clientSecret}`;
 
-var socket = 0;
 
-io.on('connection', async function(currSocket){
+
+// This is run when a user visits a page.
+// I'm storing the socket so that I can send data to the right webpage aka the page that displays the profile
+// information.
+var socket = 0;
+io.on('connection', async function(currSocket) {
     socket = currSocket;
     console.log("connected");
 });
 
-// app.listen doesn't work here
-http.listen(8080, function(){
-    console.log('listening on *:8080');
+app.post('/search-user', async function(req, res) {
+    await githubRequest();
+    console.log('Data displayed');
 });
 
 // Redirect url route. Taken after user accepts authorization in Oauth page.
-app.get('/oauth/redirect', (req, res) => {
+app.get('/oauth/redirect', function(req, res) {
     var requestToken = req.query.code;
 
     fetch('https://github.com/login/oauth/access_token' + clientInfo + `&code=${requestToken}`, { 
@@ -57,6 +62,15 @@ app.get('/oauth/redirect', (req, res) => {
         })
 });
 
+// app.listen doesn't work here
+http.listen(8080, function() {
+    console.log('listening on *:8080');
+});
+
+
+//      ******* HELPER FUNCTIONS ********
+
+// This to fetch the user if they choose to sign-in.
 function fetchUser(accessToken) {
     return fetch('https://api.github.com/user', {
                 headers: {

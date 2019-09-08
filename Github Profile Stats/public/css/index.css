@@ -1,3 +1,91 @@
+body, html {
+    margin: 0;
+    max-height: 100%;
+    max-width: 100%;
+    font-family: 'Manjari', times;
+}
+
 body {
-    background: pink;
+    background: #01024e;
+    color: #E3E7E0;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+}
+
+.content-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1 {
+    margin-top: 50px;
+    font-size: 3.2rem;
+}
+
+input[type=text],
+input[type=submit] {
+    font-family: 'Manjari', times;
+    letter-spacing: .5px;
+}
+
+input[type=text] {
+    background: transparent;
+	border: none;
+    border-bottom: 1px solid #83A4C5;
+    height: 50px;
+    width: 300px;
+    margin-top: 40px;
+	outline: none;
+	padding: 0px 0px 0px 0px;
+    font-style: italic;
+    font-size: 24px;
+    color: #E3E7E0;
+}
+
+input[type=submit] {
+    border: none;
+    border-radius: 15px;
+    height: 40px;
+    width: 110px;
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+input[type=submit]:hover {
+    cursor: pointer;
+}
+
+h2 {
+    margin-top: 50px;
+    font-size: 2.4rem;
+}
+
+#login-link {
+    height: 60px;
+    width: 250px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.25rem;
+    letter-spacing: .5px;
+    text-decoration: none;
+    background: #ff6464;
+    color: #E3E7E0;
+}
+
+#login-link:hover
+{
+    /* color:white; */
+    text-decoration: underline;
+    cursor:pointer;
+}
+
+.fa-github {
+    margin-left: 1px;
+    /* font-size: 1.2rem; */
 }

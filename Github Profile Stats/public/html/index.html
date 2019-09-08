@@ -1,13 +1,30 @@
 <html>
 <head>
-    <title>Welcome</title>
+    <title>Welcome</title>    
+    <link href="https://fonts.googleapis.com/css?family=Manjari:100,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
+    <script src="https://kit.fontawesome.com/406b77ded1.js"></script>
 </head>
 <body>
-  <a href="https://github.com/login/oauth/authorize?client_id=4567ebbd17d189643355
-            &redirect_uri=http://localhost:8080/oauth/redirect">
-    Login with github
-  </a>            
-</body>
 
+<div class="main-container">
+    <div class="content-container">
+        <h1>Github Profile Stats</h1>
+
+        <form action="/search-user" method="POST">
+            <input type="text" placeholder="Enter a user" name="username">
+            <input type="submit">
+        </form>
+
+        <h2>Or login into your account</h2>
+
+        <a id="login-link" href="https://github.com/login/oauth/authorize?client_id=4567ebbd17d189643355
+            &redirect_uri=http://localhost:8080/oauth/redirect">
+            Login to github <i class="fab fa-github"></i>
+        </a>   
+    </div>
+
+</div> 
+       
+</body>
 </html>
