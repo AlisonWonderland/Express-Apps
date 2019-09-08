@@ -20,33 +20,19 @@ var clientInfo =`?client_id=${clientID}&client_secret=${clientSecret}`;
 // I'm storing the socket so that I can send data to the right webpage aka the page that displays the profile
 // information.
 var socket = 0;
-io.on('connection', async function(currSocket) {
+io.on('connection', async function(currSocket) { // remove async ??
     socket = currSocket;
     console.log("connected");
-});
-
-app.post('/search-user', async function(req, res) {
-    await githubRequest();
-    console.log('Data displayed');
 });
 
 // Redirect url route. Taken after user accepts authorization in Oauth page.
 app.get('/oauth/redirect', function(req, res) {
     var requestToken = req.query.code;
 
-    fetch('https://github.com/login/oauth/access_token' + clientInfo + `&code=${requestToken}`, { 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-        .then(function(response) {
-            return response.json();
-        })
+    requestAccessToken(requestToken)
         .then(function(response) {
             var accessToken = response.access_token;
-            return fetchUser(accessToken);
+            return fetchAuthenticatedUser(accessToken);
         })
         .then(function(response) {
             return response.json();
@@ -59,7 +45,19 @@ app.get('/oauth/redirect', function(req, res) {
         })
         .catch(function(error) {
             console.log(error);
+        });
+});
+
+app.post('/search-user', function(req, res) {
+    fetchGithubUser(req.body.username).then(async function(response) {
+            githubInfo = await getGithubInfo(response);
+            res.render('welcome', githubInfo);
+
+            await getRepoInfo(response.repos_url);
         })
+        .catch(function(error) {
+            console.log(error);
+        });
 });
 
 // app.listen doesn't work here
@@ -70,13 +68,38 @@ http.listen(8080, function() {
 
 //      ******* HELPER FUNCTIONS ********
 
+function requestAccessToken(requestToken) {
+    return fetch('https://github.com/login/oauth/access_token' + clientInfo + `&code=${requestToken}`, { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(function(response) {
+            return response.json();
+        });
+}
+
 // This to fetch the user if they choose to sign-in.
-function fetchUser(accessToken) {
+function fetchAuthenticatedUser(accessToken) {
     return fetch('https://api.github.com/user', {
                 headers: {
                     Authorization: 'token ' + accessToken
                 }
             });
+}
+
+// This is to fetch a user that is entered in the form.
+function fetchGithubUser(username) {
+    return fetch(`https://api.github.com/users/${username}` + clientInfo)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(response) {
+
+            return response;
+        })
 }
 
 async function getGithubInfo(response) {

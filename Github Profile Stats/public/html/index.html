@@ -4,6 +4,7 @@
     <link href="https://fonts.googleapis.com/css?family=Manjari:100,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
     <script src="https://kit.fontawesome.com/406b77ded1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 
@@ -11,10 +12,16 @@
     <div class="content-container">
         <h1>Github Profile Stats</h1>
 
+        <h2>Enter a user</h2>
+
         <form action="/search-user" method="POST">
             <input type="text" placeholder="Enter a user" name="username">
             <input type="submit">
         </form>
+
+        <div class="error-message">
+            <p>ERROR: INVALID USER / ERROR OCCURED WHILE FETCHING</p>
+        </div>
 
         <h2>Or login into your account</h2>
 
@@ -24,6 +31,7 @@
         </a>   
     </div>
 
+    <script src="index.js"></script>
 </div> 
        
 </body>
