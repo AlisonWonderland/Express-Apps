@@ -50,10 +50,17 @@ app.get('/oauth/redirect', function(req, res) {
 
 app.post('/search-user', function(req, res) {
     fetchGithubUser(req.body.username).then(async function(response) {
-            githubInfo = await getGithubInfo(response);
-            res.render('welcome', githubInfo);
+            if(response.ok) {
+                var userResponse = await response.json();
+                githubInfo = await getGithubInfo(userResponse);
+                res.render('welcome', githubInfo);
 
-            await getRepoInfo(response.repos_url);
+                await getRepoInfo(userResponse.repos_url);
+            }
+            else {
+                res.redirect('/');
+                setTimeout(function(){ socket.emit('fetch error', {msg: response.statusText}); }, 500);
+            }
         })
         .catch(function(error) {
             console.log(error);
@@ -94,10 +101,6 @@ function fetchAuthenticatedUser(accessToken) {
 function fetchGithubUser(username) {
     return fetch(`https://api.github.com/users/${username}` + clientInfo)
         .then(function(response) {
-            return response.json();
-        })
-        .then(function(response) {
-
             return response;
         })
 }
