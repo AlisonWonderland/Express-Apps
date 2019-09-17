@@ -11,6 +11,7 @@ Current look 9/1/2019 1:00pm
 
 
 ## Todo
+* RENAME WELCOME.JS AND RELATED. Remove WELCOME from user entered search
 * After that think about adding loading animations. To do this send amount of repos(repos.length) and then create that amount of divs and then add to those divs as you get the info.
 * Add stylings to login page
 * Add links to repo titles.
