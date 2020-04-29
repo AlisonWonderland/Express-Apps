@@ -10,8 +10,8 @@ app.use(express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public/js'));
 app.set("view engine", "ejs");
 
-var clientID = '4567ebbd17d189643355';
-var clientSecret = '2163bb3cd1c103c1bb2d0ce5fc312955448e05e6';
+var clientID = '';
+var clientSecret = '';
 var clientInfo =`?client_id=${clientID}&client_secret=${clientSecret}`;
 
 
